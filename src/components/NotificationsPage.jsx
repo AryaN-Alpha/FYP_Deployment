@@ -1,67 +1,76 @@
 import { useState } from "react";
-import { Bell, CheckCircle, XCircle, Clock, Info, X } from "lucide-react";
+import  DashboardLayout  from "./DashboardLayout";
+import  Button  from "./ui/Button";
+import { Bell, CheckCircle, XCircle, Clock, Info, Check } from "lucide-react";
 
-export default function NotificationsPage() {
-  const [notifications] = useState([
+export default function NotificationsPage({ user, onNavigate, onLogout }) {
+  const [notifications, setNotifications] = useState([
     {
       id: "1",
       type: "success",
       title: "Course Request Approved",
-      courseCode: "CS301",
-      courseName: "Data Structures & Algorithms",
-      reviewedBy: "Dr. Smith",
       message:
-        "Your request for CS301 - Data Structures & Algorithms has been approved.",
-      details:
-        "Your course request was successfully reviewed and approved by Dr. Smith on October 30, 2025. You are now officially enrolled for the Spring 2026 semester.",
+        "Your request for CS301 - Data Structures & Algorithms has been approved by Dr. Smith.",
       timestamp: "2 hours ago",
-      status: "Approved",
+      read: false,
     },
     {
       id: "2",
       type: "error",
       title: "Course Request Rejected",
-      courseCode: "CS304",
-      courseName: "Machine Learning",
-      reviewedBy: "Dr. Adams",
       message:
-        "Your request for CS304 - Machine Learning was rejected due to missing prerequisites.",
-      details:
-        "Reason for rejection: You must complete CS301 - Data Structures & Algorithms before enrolling in CS304. Please contact your advisor for further assistance.",
+        "Your request for CS304 - Machine Learning was rejected. Reason: Missing prerequisite CS301.",
       timestamp: "5 hours ago",
-      status: "Rejected",
+      read: false,
     },
     {
       id: "3",
       type: "warning",
       title: "Pending Review",
-      courseCode: "CS302",
-      courseName: "Database Systems",
-      reviewedBy: "Awaiting Advisor Review",
       message:
-        "Your request for CS302 - Database Systems is pending advisor approval.",
-      details:
-        "Your course request has been submitted successfully and is currently under advisor review. You will be notified once it is approved or rejected.",
+        "Your course request for CS302 - Database Systems is pending advisor review.",
       timestamp: "1 day ago",
-      status: "Pending",
+      read: false,
     },
     {
       id: "4",
       type: "info",
       title: "New Course Available",
-      courseCode: "CS308",
-      courseName: "Artificial Intelligence",
-      reviewedBy: "System Admin",
       message:
-        "CS308 - Artificial Intelligence is now open for enrollment in Spring 2026.",
-      details:
-        "Explore advanced AI topics, including neural networks, search algorithms, and reinforcement learning. Register early to secure your spot.",
+        "CS308 - Artificial Intelligence is now available for enrollment in Spring 2026.",
       timestamp: "2 days ago",
-      status: "Information",
+      read: true,
+    },
+    {
+      id: "5",
+      type: "success",
+      title: "Profile Updated",
+      message: "Your profile information has been successfully updated.",
+      timestamp: "3 days ago",
+      read: true,
+    },
+    {
+      id: "6",
+      type: "info",
+      title: "System Maintenance",
+      message:
+        "The system will undergo maintenance on October 15, 2025 from 2:00 AM to 4:00 AM.",
+      timestamp: "4 days ago",
+      read: true,
     },
   ]);
 
-  const [selectedNotification, setSelectedNotification] = useState(null);
+  const handleMarkAsRead = (id) => {
+    setNotifications(
+      notifications.map((n) =>
+        n.id === id ? { ...n, read: true } : n
+      )
+    );
+  };
+
+  const handleMarkAllAsRead = () => {
+    setNotifications(notifications.map((n) => ({ ...n, read: true })));
+  };
 
   const getIcon = (type) => {
     switch (type) {
@@ -73,8 +82,6 @@ export default function NotificationsPage() {
         return <Clock className="w-5 h-5 text-yellow-600" />;
       case "info":
         return <Info className="w-5 h-5 text-blue-600" />;
-      default:
-        return null;
     }
   };
 
@@ -88,174 +95,138 @@ export default function NotificationsPage() {
         return "bg-yellow-50";
       case "info":
         return "bg-blue-50";
-      default:
-        return "bg-gray-50";
     }
   };
 
-  const unreadCount = notifications.length;
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
-    <div className="min-h-screen bg-white p-8">
-      {/* Header */}
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-1">
-            Notifications
-          </h2>
-          <p className="text-gray-600">
-            Stay updated with your course requests and system alerts
-          </p>
-        </div>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-sm">
+    <DashboardLayout
+      user={user}
+      onNavigate={onNavigate}
+      onLogout={onLogout}
+      currentPage="notifications"
+    >
+      <div className="p-8">
+        
+        {/* Header */}
+        <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 mb-1">Total Notifications</p>
-              <p className="text-xl font-semibold text-gray-900">
-                {notifications.length}
+              <h2 className="text-gray-900 mb-2">Notifications</h2>
+              <p className="text-gray-600">
+                Stay updated with your course requests and system alerts
               </p>
             </div>
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-              <Bell className="w-6 h-6 text-blue-600" />
-            </div>
+
+            {unreadCount > 0 && (
+              <Button
+                variant="outline"
+                onClick={handleMarkAllAsRead}
+                className="gap-2"
+              >
+                <Check className="w-4 h-4" /> Mark All as Read
+              </Button>
+            )}
           </div>
         </div>
 
-        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-600 mb-1">Unread</p>
-              <p className="text-xl font-semibold text-gray-900">
-                {unreadCount}
-              </p>
-            </div>
-            <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-              <Bell className="w-6 h-6 text-yellow-600" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Notifications List */}
-      <div className="space-y-3">
-        {notifications.map((notification) => (
-          <div
-            key={notification.id}
-            className='border border-gray-200 rounded-xl bg-white shadow-sm transition-all'
-          >
-            <div className="p-5 flex items-start gap-4">
-              <div
-                className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${getBackgroundColor(
-                  notification.type
-                )}`}
-              >
-                {getIcon(notification.type)}
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between gap-4 mb-2">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    {notification.title}
-                  </h3>
-                  <span className="text-sm text-gray-500 flex-shrink-0">
-                    {notification.timestamp}
-                  </span>
-                </div>
-                <p className="text-gray-600 mb-3">{notification.message}</p>
-                <button
-                  onClick={() => setSelectedNotification(notification)}
-                  className="px-3 py-1 border border-gray-300 rounded-lg text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-                >
-                  View Full Request
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Popup Modal */}
-      {selectedNotification && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl relative overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b bg-gray-50">
-              <div className="flex items-center gap-3">
-                {getIcon(selectedNotification.type)}
-                <h3 className="text-xl font-semibold text-gray-900">
-                  {selectedNotification.title}
-                </h3>
-              </div>
-              <button
-                onClick={() => setSelectedNotification(null)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Content */}
-            <div className="p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <p className="text-gray-500 font-medium">Course Code</p>
-                  <p className="text-gray-900 font-semibold">
-                    {selectedNotification.courseCode}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-gray-500 font-medium">Course Name</p>
-                  <p className="text-gray-900 font-semibold">
-                    {selectedNotification.courseName}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-gray-500 font-medium">Reviewed By</p>
-                  <p className="text-gray-900 font-semibold">
-                    {selectedNotification.reviewedBy}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-gray-500 font-medium">Status</p>
-                  <span
-                    className={`inline-block px-2 py-1 rounded-md text-xs font-medium ${
-                      selectedNotification.type === "success"
-                        ? "bg-green-100 text-green-700"
-                        : selectedNotification.type === "error"
-                        ? "bg-red-100 text-red-700"
-                        : selectedNotification.type === "warning"
-                        ? "bg-yellow-100 text-yellow-700"
-                        : "bg-blue-100 text-blue-700"
-                    }`}
-                  >
-                    {selectedNotification.status}
-                  </span>
-                </div>
-              </div>
-
+        {/* Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* Total */}
+          <div className="p-6 border rounded-xl bg-white shadow-sm">
+            <div className="flex items-center justify-between">
               <div>
-                <h4 className="text-gray-800 font-semibold mb-2">Comment</h4>
-                <p className="text-gray-700 leading-relaxed">
-                  {selectedNotification.details}
+                <p className="text-gray-600 mb-1">Total Notifications</p>
+                <p className="text-gray-900 font-medium">
+                  {notifications.length}
                 </p>
               </div>
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                <Bell className="w-6 h-6 text-blue-600" />
+              </div>
             </div>
+          </div>
 
-            {/* Footer */}
-            <div className="px-6 py-4 border-t bg-gray-50 flex justify-end">
-              <button
-                onClick={() => setSelectedNotification(null)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition cursor-pointer"
-              >
-                Close
-              </button>
+          {/* Unread */}
+          <div className="p-6 border rounded-xl bg-white shadow-sm">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-600 mb-1">Unread</p>
+                <p className="text-gray-900 font-medium">{unreadCount}</p>
+              </div>
+              <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                <Bell className="w-6 h-6 text-yellow-600" />
+              </div>
             </div>
           </div>
         </div>
-      )}
-    </div>
+
+        {/* Notifications List */}
+        <div className="space-y-3">
+          {notifications.map((n) => (
+            <div
+              key={n.id}
+              className={`border rounded-xl bg-white shadow-sm transition-all p-5 ${
+                !n.read ? "border-l-4 border-l-blue-500" : ""
+              }`}
+            >
+              <div className="flex items-start gap-4">
+                <div
+                  className={`w-10 h-10 rounded-lg flex items-center justify-center ${getBackgroundColor(
+                    n.type
+                  )}`}
+                >
+                  {getIcon(n.type)}
+                </div>
+
+                <div className="flex-1">
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-gray-900 font-medium">
+                        {n.title}
+                      </h3>
+
+                      {!n.read && (
+                        <span className="px-2 py-1 text-sm bg-blue-100 text-blue-700 rounded">
+                          New
+                        </span>
+                      )}
+                    </div>
+
+                    <span className="text-gray-500 text-sm">
+                      {n.timestamp}
+                    </span>
+                  </div>
+
+                  <p className="text-gray-600 mb-3">{n.message}</p>
+
+                  {!n.read && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleMarkAsRead(n.id)}
+                    >
+                      Mark as Read
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Empty State */}
+        {notifications.length === 0 && (
+          <div className="p-12 text-center border rounded-xl bg-white shadow-sm">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Bell className="w-8 h-8 text-gray-400" />
+            </div>
+            <h3 className="text-gray-900 mb-2">No Notifications</h3>
+            <p className="text-gray-600">You're all caught up!</p>
+          </div>
+        )}
+      </div>
+    </DashboardLayout>
   );
 }
