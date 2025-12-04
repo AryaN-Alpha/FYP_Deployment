@@ -49,7 +49,8 @@ export default function DashboardLayout({  children }) {
         <nav className="flex-1 p-3 space-y-1">
           <button
             className="w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/60 text-slate-300 hover:text-white"
-           onClick={() => navigate(`/${role.lowerCase()}dashboard`)}
+          onClick={() => navigate(`/${role.toLowerCase()}dashboard`)}
+
           >
             <LayoutDashboard className="w-5 h-5" />
             <span>Dashboard</span>
