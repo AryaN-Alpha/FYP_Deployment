@@ -3,7 +3,7 @@ import  DashboardLayout  from './DashboardLayout';
 import  Card  from './ui/Card';
 import  Button  from './ui/Button';
 import  Badge  from './ui/Badge';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/Dialog';
 import { BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { BookOpen,  CheckCircle, XCircle, Clock, Filter, Eye } from 'lucide-react';
 
