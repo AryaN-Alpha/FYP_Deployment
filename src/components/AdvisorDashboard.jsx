@@ -96,15 +96,8 @@ const handleViewDetails = (request) => {
   };
 
   return (
-    <DashboardLayout user={user} onNavigate={onNavigate} onLogout={onLogout} currentPage="advisor-dashboard">
+    <DashboardLayout >
       <div className="p-8">
-
-        {/* Header */}
-        <div className="mb-8">
-          <h2 className="text-gray-900 mb-2">Incoming Course Requests</h2>
-          <p className="text-gray-600">Review and approve student course enrollment requests</p>
-        </div>
-
        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card className="p-6 shadow-md hover:shadow-lg transition-shadow">
