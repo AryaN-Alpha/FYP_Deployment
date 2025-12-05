@@ -6,11 +6,11 @@ import  Badge  from './ui/Badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/Dialog';
 import { BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { BookOpen,  CheckCircle, XCircle, Clock, Filter, Eye } from 'lucide-react';
-
+import { useUser } from '../context/UserContext';
 export default function ProgramManagerDashboard() {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-
+  const { user, setUser } = useUser();
   const requests = [
     {
       id: '1',
