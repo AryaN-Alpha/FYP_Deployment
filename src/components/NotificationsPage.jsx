@@ -3,7 +3,7 @@ import DashboardLayout from "./DashboardLayout";
 import Button from "./ui/Button";
 import { Bell, CheckCircle, XCircle, Clock, Info, Check } from "lucide-react";
 
-export default function NotificationsPage({ user, onNavigate, onLogout }) {
+export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([
     {
       id: "1",
