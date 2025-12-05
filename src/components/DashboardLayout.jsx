@@ -1,36 +1,75 @@
 import React, { useState } from "react";
-import { GraduationCap, Bell, User, LogOut, LayoutDashboard, BarChart3 } from "lucide-react";
-import Button from "./ui/Button";
-import Badge from "./ui/Badge";
-import { useNavigate } from "react-router-dom";
-import { useUser } from '../context/UserContext';
+import { GraduationCap, Bell, User, LogOut, LayoutDashboard, Menu, X } from "lucide-react";
 
+// Mock components
+const Button = ({ variant, className, onClick, children }) => (
+  <button
+    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+      variant === "ghost" ? "hover:bg-slate-700/60 text-slate-300" : ""
+    } ${className}`}
+    onClick={onClick}
+  >
+    {children}
+  </button>
+);
 
+const Badge = ({ className, children }) => (
+  <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${className}`}>
+    {children}
+  </span>
+);
 
-export default function DashboardLayout({  children }) {
-    const navigate = useNavigate();
-    const { user, setUser } = useUser();
+// Mock navigation and context
+const mockUser = {
+  name: "John Doe",
+  email: "student@example.com"
+};
 
-    const handleLogout = () => {
-    setUser(null);              // clear context
-    localStorage.removeItem("token");   // remove token
-    navigate("/login");         // redirect
+export default function DashboardLayout({ children }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const user = mockUser;
+
+  const handleLogout = () => {
+    console.log("Logout");
   };
-  let role= "student"
-      if(user.email.includes("student")) {
-        role = "Student"
-      }else if(user.email.includes("advisor")) {
-        role = "Advisor"
-      } else if(user.email.includes("pm")) {
-        role = "Program Manager"
-      }
 
+  const navigate = (path) => {
+    console.log("Navigate to:", path);
+    setSidebarOpen(false);
+  };
+
+  let role = "student";
+  if (user.email.includes("student")) {
+    role = "Student";
+  } else if (user.email.includes("advisor")) {
+    role = "Advisor";
+  } else if (user.email.includes("pm")) {
+    role = "pm";
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
       {/* Sidebar */}
-      <aside className="w-64 bg-gradient-to-b from-slate-800 to-slate-900 text-white flex flex-col shadow-xl">
+      <aside
+        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-slate-800 to-slate-900 text-white flex flex-col shadow-xl transform transition-transform duration-300 ease-in-out ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        }`}
+      >
+        {/* Close button for mobile */}
+        <button
+          className="lg:hidden absolute top-4 right-4 p-2 rounded-lg hover:bg-slate-700/60"
+          onClick={() => setSidebarOpen(false)}
+        >
+          <X className="w-5 h-5 text-white" />
+        </button>
 
         {/* Logo */}
         <div className="p-5 border-b border-slate-700">
@@ -49,8 +88,7 @@ export default function DashboardLayout({  children }) {
         <nav className="flex-1 p-3 space-y-1">
           <button
             className="w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/60 text-slate-300 hover:text-white"
-          onClick={() => navigate(`/${role.toLowerCase()}dashboard`)}
-
+            onClick={() => navigate(`/${role.toLowerCase()}dashboard`)}
           >
             <LayoutDashboard className="w-5 h-5" />
             <span>Dashboard</span>
@@ -60,7 +98,7 @@ export default function DashboardLayout({  children }) {
             className="w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/60 text-slate-300 hover:text-white"
             onClick={() => navigate("/notifications")}
           >
-            <Bell className="w-5 h-5 " />
+            <Bell className="w-5 h-5" />
             <span>Notifications</span>
             <Badge className="bg-emerald-400 text-slate-900">3</Badge>
           </button>
@@ -88,26 +126,41 @@ export default function DashboardLayout({  children }) {
       </aside>
 
       {/* Main Panel */}
-      <div className="flex-1 flex flex-col">
-
+      <div className="flex-1 flex flex-col w-full lg:w-auto">
         {/* Header */}
-        <header className="bg-gradient-to-r from-slate-800 to-slate-900 border-b border-slate-700 px-6 py-4 shadow-lg">
+        <header className="bg-gradient-to-r from-slate-800 to-slate-900 border-b border-slate-700 px-4 sm:px-6 py-4 shadow-lg">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-xl font-bold text-white">Dashboard</h1>
-              <p className="text-sm text-slate-300">
-                Welcome back,{" "}
-                <span className="text-emerald-400 font-medium">{user.name}</span>
-              </p>
+            <div className="flex items-center gap-3">
+              {/* Mobile menu button */}
+              <button
+                className="lg:hidden p-2 rounded-lg hover:bg-slate-700/60"
+                onClick={() => setSidebarOpen(true)}
+              >
+                <Menu className="w-5 h-5 text-white" />
+              </button>
+
+              <div>
+                <h1 className="text-lg sm:text-xl font-bold text-white">Dashboard</h1>
+                <p className="text-xs sm:text-sm text-slate-300">
+                  Welcome back,{" "}
+                  <span className="text-emerald-400 font-medium">{user.name}</span>
+                </p>
+              </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <button className="relative p-2 rounded-lg hover:bg-slate-700/60 cursor-pointer" onClick={()=>navigate("/notifications")}>
+            <div className="flex items-center gap-2 sm:gap-3">
+              <button
+                className="relative p-2 rounded-lg hover:bg-slate-700/60 cursor-pointer"
+                onClick={() => navigate("/notifications")}
+              >
                 <Bell className="w-5 h-5 text-slate-300" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
               </button>
 
-              <button className="p-2 rounded-lg hover:bg-slate-700/60 flex items-center gap-2 cursor-pointer" onClick={()=>navigate("/profile")}>
+              <button
+                className="p-2 rounded-lg hover:bg-slate-700/60 flex items-center gap-2 cursor-pointer"
+                onClick={() => navigate("/profile")}
+              >
                 <div className="w-9 h-9 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center shadow-md">
                   <User className="w-5 h-5 text-white" />
                 </div>
@@ -117,10 +170,9 @@ export default function DashboardLayout({  children }) {
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-auto p-6">
+        <main className="flex-1 overflow-auto p-4 sm:p-6">
           {children}
         </main>
-
       </div>
     </div>
   );
