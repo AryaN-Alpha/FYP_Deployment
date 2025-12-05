@@ -7,7 +7,7 @@ import { useUser } from "../context/UserContext";
 export default function LoginPage() {
   const navigate = useNavigate();
   const { setUser } = useUser();
-
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -30,7 +30,7 @@ export default function LoginPage() {
     const { email, password, batchNo } = formData;
 
     if (!email || !password || !batchNo) {
-      alert("Please fill all fields");
+      setError("Please fill all fields");
       return;
     }
 
@@ -51,7 +51,7 @@ export default function LoginPage() {
     //   const data = await response.json();
 
     //   if (!response.ok) {
-    //     alert(data.error || "Invalid credentials");
+    //     setError(data.error || "Invalid credentials");
     //     setLoading(false);
     //     return;
     //   }
@@ -71,7 +71,7 @@ export default function LoginPage() {
         email: email
       });
 
-      alert("Login successful!");
+      setError("Login successful!");
 
       if(email.includes("student")) {
         navigate("/studentdashboard");
@@ -82,7 +82,7 @@ export default function LoginPage() {
       }
       
     } catch (error) {
-      toast.error("Server error. Try again.");
+      setError("Server error. Try again.");
     }
 
     setLoading(false);
@@ -158,7 +158,7 @@ export default function LoginPage() {
                   className="w-full border border-gray-300 rounded-md p-2"
                 />
               </div>
-
+               {error && <p className="text-red-500 text-md mt- text-center">{error}</p>}
               <button
                 type="submit"
                 onClick={handleSubmit}
