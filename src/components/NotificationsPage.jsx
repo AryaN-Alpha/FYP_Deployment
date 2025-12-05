@@ -1,6 +1,6 @@
 import { useState } from "react";
-import  DashboardLayout  from "./DashboardLayout";
-import  Button  from "./ui/Button";
+import DashboardLayout from "./DashboardLayout";
+import Button from "./ui/Button";
 import { Bell, CheckCircle, XCircle, Clock, Info, Check } from "lucide-react";
 
 export default function NotificationsPage({ user, onNavigate, onLogout }) {
@@ -107,14 +107,14 @@ export default function NotificationsPage({ user, onNavigate, onLogout }) {
       onLogout={onLogout}
       currentPage="notifications"
     >
-      <div className="p-8">
-        
+      <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto">
+
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-gray-900 mb-2">Notifications</h2>
-              <p className="text-gray-600">
+              <h2 className="text-gray-900 mb-2 text-xl sm:text-2xl">Notifications</h2>
+              <p className="text-gray-600 text-sm sm:text-base">
                 Stay updated with your course requests and system alerts
               </p>
             </div>
@@ -123,7 +123,7 @@ export default function NotificationsPage({ user, onNavigate, onLogout }) {
               <Button
                 variant="outline"
                 onClick={handleMarkAllAsRead}
-                className="gap-2"
+                className="flex items-center justify-center gap-2"
               >
                 <Check className="w-4 h-4" /> Mark All as Read
               </Button>
@@ -132,15 +132,13 @@ export default function NotificationsPage({ user, onNavigate, onLogout }) {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8">
           {/* Total */}
-          <div className="p-6 border rounded-xl bg-white shadow-sm">
+          <div className="p-5 sm:p-6 border rounded-xl bg-white shadow-sm">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600 mb-1">Total Notifications</p>
-                <p className="text-gray-900 font-medium">
-                  {notifications.length}
-                </p>
+                <p className="text-gray-600 mb-1 text-sm sm:text-base">Total Notifications</p>
+                <p className="text-gray-900 font-medium text-lg">{notifications.length}</p>
               </div>
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                 <Bell className="w-6 h-6 text-blue-600" />
@@ -149,11 +147,11 @@ export default function NotificationsPage({ user, onNavigate, onLogout }) {
           </div>
 
           {/* Unread */}
-          <div className="p-6 border rounded-xl bg-white shadow-sm">
+          <div className="p-5 sm:p-6 border rounded-xl bg-white shadow-sm">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-600 mb-1">Unread</p>
-                <p className="text-gray-900 font-medium">{unreadCount}</p>
+                <p className="text-gray-600 mb-1 text-sm sm:text-base">Unread</p>
+                <p className="text-gray-900 font-medium text-lg">{unreadCount}</p>
               </div>
               <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
                 <Bell className="w-6 h-6 text-yellow-600" />
@@ -167,11 +165,11 @@ export default function NotificationsPage({ user, onNavigate, onLogout }) {
           {notifications.map((n) => (
             <div
               key={n.id}
-              className={`border rounded-xl bg-white shadow-sm transition-all p-5 ${
+              className={`border rounded-xl bg-white shadow-sm p-4 sm:p-5 transition-all ${
                 !n.read ? "border-l-4 border-l-blue-500" : ""
               }`}
             >
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-3 sm:gap-4 flex-wrap">
                 <div
                   className={`w-10 h-10 rounded-lg flex items-center justify-center ${getBackgroundColor(
                     n.type
@@ -180,26 +178,24 @@ export default function NotificationsPage({ user, onNavigate, onLogout }) {
                   {getIcon(n.type)}
                 </div>
 
-                <div className="flex-1">
-                  <div className="flex items-start justify-between mb-2">
+                <div className="flex-1 min-w-[240px]">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-gray-900 font-medium">
+                      <h3 className="text-gray-900 font-medium text-base sm:text-lg">
                         {n.title}
                       </h3>
 
                       {!n.read && (
-                        <span className="px-2 py-1 text-sm bg-blue-100 text-blue-700 rounded">
+                        <span className="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded">
                           New
                         </span>
                       )}
                     </div>
 
-                    <span className="text-gray-500 text-sm">
-                      {n.timestamp}
-                    </span>
+                    <span className="text-gray-500 text-sm">{n.timestamp}</span>
                   </div>
 
-                  <p className="text-gray-600 mb-3">{n.message}</p>
+                  <p className="text-gray-600 mb-3 text-sm sm:text-base">{n.message}</p>
 
                   {!n.read && (
                     <Button
@@ -218,11 +214,11 @@ export default function NotificationsPage({ user, onNavigate, onLogout }) {
 
         {/* Empty State */}
         {notifications.length === 0 && (
-          <div className="p-12 text-center border rounded-xl bg-white shadow-sm">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Bell className="w-8 h-8 text-gray-400" />
+          <div className="p-10 sm:p-12 text-center border rounded-xl bg-white shadow-sm mt-8">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Bell className="w-7 h-7 sm:w-8 sm:h-8 text-gray-400" />
             </div>
-            <h3 className="text-gray-900 mb-2">No Notifications</h3>
+            <h3 className="text-gray-900 mb-2 text-lg sm:text-xl">No Notifications</h3>
             <p className="text-gray-600">You're all caught up!</p>
           </div>
         )}
