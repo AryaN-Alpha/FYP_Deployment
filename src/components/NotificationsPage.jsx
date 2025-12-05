@@ -108,29 +108,6 @@ export default function NotificationsPage({ user, onNavigate, onLogout }) {
       currentPage="notifications"
     >
       <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto">
-
-        {/* Header */}
-        <div className="mb-6 sm:mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h2 className="text-gray-900 mb-2 text-xl sm:text-2xl">Notifications</h2>
-              <p className="text-gray-600 text-sm sm:text-base">
-                Stay updated with your course requests and system alerts
-              </p>
-            </div>
-
-            {unreadCount > 0 && (
-              <Button
-                variant="outline"
-                onClick={handleMarkAllAsRead}
-                className="flex items-center justify-center gap-2"
-              >
-                <Check className="w-4 h-4" /> Mark All as Read
-              </Button>
-            )}
-          </div>
-        </div>
-
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8">
           {/* Total */}
