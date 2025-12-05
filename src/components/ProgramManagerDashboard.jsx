@@ -91,7 +91,7 @@ export default function ProgramManagerDashboard() {
   };
 
   return (
-    <DashboardLayout user={user} onNavigate={onNavigate} onLogout={onLogout} currentPage="pm-dashboard">
+    <DashboardLayout >
       <div className="p-8">
 
         {/* Stats Cards */}
