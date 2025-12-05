@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { BookOpen,  CheckCircle, XCircle, Clock, Filter, Eye } from 'lucide-react';
 
-export default function ProgramManagerDashboard({ user, onNavigate, onLogout }) {
+export default function ProgramManagerDashboard() {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
