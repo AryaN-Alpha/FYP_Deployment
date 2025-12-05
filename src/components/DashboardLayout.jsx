@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { GraduationCap, Bell, User, LogOut, LayoutDashboard, Menu, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-// Mock components
+import { useUser } from '../context/UserContext';
 const Button = ({ variant, className, onClick, children }) => (
   <button
     className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
@@ -19,19 +19,16 @@ const Badge = ({ className, children }) => (
   </span>
 );
 
-// Mock navigation and context
-const mockUser = {
-  name: "John Doe",
-  email: "student@example.com"
-};
 
 export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const user = mockUser;
+  const { user, setUser } = useUser();
 const navigate = useNavigate();
 
   const handleLogout = () => {
-    console.log("Logout");
+    setUser(null);              // clear context
+    localStorage.removeItem("token");   // remove token
+    navigate("/login");         // redirect
   };
 
   const navigateto = (path) => {
