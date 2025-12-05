@@ -8,7 +8,7 @@ import {  User, BookOpen, CheckCircle, XCircle, MessageSquare, Clock, Eye} from 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/Dialog';
 import { toast } from 'sonner';
 
-export default function AdvisorDashboard({ user, onNavigate, onLogout }) {
+export default function AdvisorDashboard() {
   const [requests, setRequests] = useState([
     {
       id: '1',
