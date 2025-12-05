@@ -101,12 +101,7 @@ export default function NotificationsPage({ user, onNavigate, onLogout }) {
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
-    <DashboardLayout
-      user={user}
-      onNavigate={onNavigate}
-      onLogout={onLogout}
-      currentPage="notifications"
-    >
+    <DashboardLayout>
       <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto">
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8">
