@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { GraduationCap, Bell, User, LogOut, LayoutDashboard, Menu, X } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 // Mock components
 const Button = ({ variant, className, onClick, children }) => (
   <button
@@ -28,13 +28,14 @@ const mockUser = {
 export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const user = mockUser;
+const navigate = useNavigate();
 
   const handleLogout = () => {
     console.log("Logout");
   };
 
-  const navigate = (path) => {
-    console.log("Navigate to:", path);
+  const navigateto = (path) => {
+    navigate( path);
     setSidebarOpen(false);
   };
 
@@ -88,7 +89,7 @@ export default function DashboardLayout({ children }) {
         <nav className="flex-1 p-3 space-y-1">
           <button
             className="w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/60 text-slate-300 hover:text-white"
-            onClick={() => navigate(`/${role.toLowerCase()}dashboard`)}
+            onClick={() => navigateto(`/${role.toLowerCase()}dashboard`)}
           >
             <LayoutDashboard className="w-5 h-5" />
             <span>Dashboard</span>
@@ -96,7 +97,7 @@ export default function DashboardLayout({ children }) {
 
           <button
             className="w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/60 text-slate-300 hover:text-white"
-            onClick={() => navigate("/notifications")}
+            onClick={() => navigateto("/notifications")}
           >
             <Bell className="w-5 h-5" />
             <span>Notifications</span>
@@ -105,7 +106,7 @@ export default function DashboardLayout({ children }) {
 
           <button
             className="w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/60 text-slate-300 hover:text-white"
-            onClick={() => navigate("/profile")}
+            onClick={() => navigateto("/profile")}
           >
             <User className="w-5 h-5" />
             <span>Profile</span>
@@ -151,7 +152,7 @@ export default function DashboardLayout({ children }) {
             <div className="flex items-center gap-2 sm:gap-3">
               <button
                 className="relative p-2 rounded-lg hover:bg-slate-700/60 cursor-pointer"
-                onClick={() => navigate("/notifications")}
+                onClick={() => navigateto("/notifications")}
               >
                 <Bell className="w-5 h-5 text-slate-300" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
@@ -159,7 +160,7 @@ export default function DashboardLayout({ children }) {
 
               <button
                 className="p-2 rounded-lg hover:bg-slate-700/60 flex items-center gap-2 cursor-pointer"
-                onClick={() => navigate("/profile")}
+                onClick={() => navigateto("/profile")}
               >
                 <div className="w-9 h-9 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center shadow-md">
                   <User className="w-5 h-5 text-white" />
