@@ -3,6 +3,7 @@ import { ArrowLeft, GraduationCap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 export default function SignupPage() {
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -19,7 +20,7 @@ export default function SignupPage() {
     setForm((prev) => ({ ...prev, [name]: value }));
 
     let isValid = true;
-
+    
     if (name === "email") {
       isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
     } else if (name === "password") {
@@ -32,40 +33,42 @@ export default function SignupPage() {
       isValid = value.trim() !== "";
     }
   };
-
+  let newErrors = {};
   const handleSubmit = async (e) => {
   e.preventDefault();
 
   // Simple validation without error state
-  if (form.name.trim() === "") {
-    alert("Name is required");
-    return;
-  }
+ if (form.name.trim() === "") {
+  newErrors.name = "Name is required";
+}
 
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-    alert("Enter a valid email");
-    return;
-  }
+if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+  newErrors.email = "Enter a valid email";
+}
 
-  if (form.batchNo.trim() === "") {
-    alert("Batch number is required");
-    return;
-  }
+if (form.batchNo.trim() === "") {
+  newErrors.batchNo = "Batch number is required";
+}
 
-  if (!(form.age >= 16 && form.age <= 100)) {
-    alert("Age must be between 16 and 100");
-    return;
-  }
+if (!(form.age >= 16 && form.age <= 100)) {
+  newErrors.age = "Age must be between 16 and 100";
+}
 
-  if (form.password.length < 8) {
-    alert("Password must be at least 8 characters");
-    return;
-  }
+if (form.password.length < 8) {
+  newErrors.password = "Password must be at least 8 characters";
+}
 
-  if (form.confirmPassword !== form.password) {
-    alert("Passwords do not match");
-    return;
-  }
+if (form.confirmPassword !== form.password) {
+  newErrors.confirmPassword = "Passwords do not match";
+}
+
+// If errors found → stop submission
+if (Object.keys(newErrors).length > 0) {
+  setErrors(newErrors);
+  return;
+}
+
+setErrors({}); // Clear errors if everything is valid
     if(form.email.includes("student")) {
         navigate("/studentdashboard");
       }else if(form.email.includes("advisor")) {
@@ -146,33 +149,41 @@ export default function SignupPage() {
                 value={form.name}
                 onChange={handleChange}
                 placeholder="John Doe"
-                className="w-full p-2.5 bg-gray-100 border rounded-lg transition focus:outline-none border-gray-300"
+                className={`w-full p-2.5 bg-gray-100 border rounded-lg transition focus:outline-none 
+                  ${errors.name ? "border-red-500" : "border-gray-300"}`}
               />
+              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
             </div>
 
             {/* Email */}
             <div>
               <label className="block mb-1 font-medium text-gray-700">Email Address</label>
-              <input
+             <input
                 name="email"
                 type="email"
                 value={form.email}
                 onChange={handleChange}
                 placeholder="student@university.edu"
-                className="w-full p-2.5 bg-gray-100 border rounded-lg transition focus:outline-none border-gray-300"
+                className={`w-full p-2.5 bg-gray-100 border rounded-lg transition focus:outline-none 
+                  ${errors.email ? "border-red-500" : "border-gray-300"}`}
               />
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+
             </div>
 
             {/* Batch */}
             <div>
               <label className="block mb-1 font-medium text-gray-700">Batch Number</label>
-              <input
+             <input
                 name="batchNo"
                 value={form.batchNo}
                 onChange={handleChange}
                 placeholder="CS-2021"
-                className="w-full p-2.5 bg-gray-100 border rounded-lg transition focus:outline-none border-gray-300"
+                className={`w-full p-2.5 bg-gray-100 border rounded-lg transition focus:outline-none 
+                  ${errors.batchNo ? "border-red-500" : "border-gray-300"}`}
               />
+              {errors.batchNo && <p className="text-red-500 text-sm mt-1">{errors.batchNo}</p>}
+
             </div>
 
             {/* Age */}
@@ -184,8 +195,11 @@ export default function SignupPage() {
                 value={form.age}
                 onChange={handleChange}
                 placeholder="22"
-                className="w-full p-2.5 bg-gray-100 border rounded-lg transition focus:outline-none border-gray-300"
+                className={`w-full p-2.5 bg-gray-100 border rounded-lg transition focus:outline-none 
+                  ${errors.age ? "border-red-500" : "border-gray-300"}`}
               />
+              {errors.age && <p className="text-red-500 text-sm mt-1">{errors.age}</p>}
+
             </div>
 
             {/* Password */}
@@ -197,21 +211,27 @@ export default function SignupPage() {
                 value={form.password}
                 onChange={handleChange}
                 placeholder="At least 8 characters"
-                className="w-full p-2.5 bg-gray-100 border rounded-lg transition focus:outline-none border-gray-300"
+                className={`w-full p-2.5 bg-gray-100 border rounded-lg transition focus:outline-none 
+                  ${errors.username ? "border-red-500" : "border-gray-300"}`}
               />
+              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+
             </div>
 
             {/* Confirm Password */}
             <div>
               <label className="block mb-1 font-medium text-gray-700">Confirm Password</label>
-              <input
+             <input
                 name="confirmPassword"
                 type="password"
                 value={form.confirmPassword}
                 onChange={handleChange}
                 placeholder="Re-enter password"
-                className="w-full p-2.5 bg-gray-100 border rounded-lg transition focus:outline-none border-gray-300"
+                className={`w-full p-2.5 bg-gray-100 border rounded-lg transition focus:outline-none 
+                  ${errors.confirmPassword ? "border-red-500" : "border-gray-300"}`}
               />
+              {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
+                  
             </div>
 
             {/* Submit Button */}
