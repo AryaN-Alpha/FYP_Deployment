@@ -143,7 +143,7 @@ const [notes, setNotes] = useState('');
   };
 
   return (
-    <DashboardLayout user={user} onNavigate={onNavigate} onLogout={onLogout} currentPage="student-dashboard">
+    <DashboardLayout >
       <div className="p-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
