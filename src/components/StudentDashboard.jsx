@@ -60,7 +60,7 @@ const semester3Courses = [
   { code: '-', title: 'University Elective - II', credits: '3 (3+0)', prereq: '-' },
 ];
 
-export default function StudentDashboard({ onNavigate, onLogout }) {
+export default function StudentDashboard() {
   const [requests, setRequests] = useState([
     {
       id: '1',
