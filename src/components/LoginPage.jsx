@@ -228,7 +228,7 @@ export default function LoginPage() {
                 {userRole === "student" ? (
                   <GraduationCap className="w-8 h-8 text-blue-600" />
                 ) : (
-                  <Shield className="w-8 h-8 text-purple-600" />
+                  <Shield className="w-8 h-8 text-blue-600" />
                 )}
               </div>
             </div>
@@ -281,7 +281,7 @@ export default function LoginPage() {
               
               <button
                 type="submit"
-                className={`w-full ${userRole === "student" ? "bg-blue-600 hover:bg-blue-700" : "bg-purple-600 hover:bg-purple-700"} text-white py-2 rounded-md transition-colors cursor-pointer`}
+                className={`w-full ${userRole === "student" ? "bg-blue-600 hover:bg-blue-700" : "bg-blue-600 hover:bg-blue-700"} text-white py-2 rounded-md transition-colors cursor-pointer`}
               >
                 Sign In
               </button>
