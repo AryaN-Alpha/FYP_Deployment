@@ -28,7 +28,7 @@ export default function LoginPage() {
   const handleStudentSubmit = async (e) => {
     e.preventDefault();
 
-    // const { email, password, batchNo } = formData;
+    const { email, password, batchNo } = formData;
 
     // if (!email || !password || !batchNo) {
     //   setError("Please fill all fields");
@@ -63,7 +63,7 @@ export default function LoginPage() {
         id: 1,
         name: "John Doe",
         role: "student",
-        email: formData.email
+        email: email
       });
 
       setError("Login successful!");
@@ -87,7 +87,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     
-    // const { email, password, batchNo } = formData;
+    const { email, password, batchNo } = formData;
 
     // if (!email || !password || !batchNo) {
     //   setError("Please fill all fields");
@@ -122,7 +122,7 @@ export default function LoginPage() {
         id: 1,
         name: "John Doe",
         role: "student",
-        email:formData.email
+        email:email
       });
 
       setError("Login successful!");
