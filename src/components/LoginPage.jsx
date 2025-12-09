@@ -63,7 +63,7 @@ export default function LoginPage() {
         id: 1,
         name: "John Doe",
         role: "student",
-        email: email
+        email: formData.email
       });
 
       setError("Login successful!");
