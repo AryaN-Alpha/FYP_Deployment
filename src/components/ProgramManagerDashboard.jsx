@@ -6,11 +6,12 @@ import  Badge  from './ui/Badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/Dialog';
 import { BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { BookOpen,  CheckCircle, XCircle, Clock, Filter, Eye } from 'lucide-react';
-import { useUser } from '../context/UserContext';
+
 export default function ProgramManagerDashboard() {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-  const { user, setUser } = useUser();
+const [activeFilter, setActiveFilter] = useState("all");
+
   const requests = [
     {
       id: '1',
@@ -28,7 +29,7 @@ export default function ProgramManagerDashboard() {
       courseCode: 'CS304',
       courseName: 'Machine Learning',
       semester: 'Fall 2025',
-      status: 'pending',
+      status: 'new',
       advisorName: 'Dr. Johnson',
       requestedDate: '2025-10-02',
     },
@@ -54,26 +55,37 @@ export default function ProgramManagerDashboard() {
     },
   ];
 
-  const stats = {
-    total: requests.length,
-    approved: requests.filter((r) => r.status === 'approved').length,
-    pending: requests.filter((r) => r.status === 'pending').length,
-    rejected: requests.filter((r) => r.status === 'rejected').length,
-    approvalRate: ((requests.filter((r) => r.status === 'approved').length / requests.length) * 100).toFixed(1),
-  };
+  // Filter Requests
+const filteredRequests =
+  activeFilter === "all"
+    ? requests
+    : requests.filter((r) => r.status === activeFilter);
+
+// Enhanced Stats (optional)
+const stats = {
+  total: requests.length,
+  approved: requests.filter((r) => r.status === "approved").length,
+  new: requests.filter((r) => r.status === "new").length,
+  rejected: requests.filter((r) => r.status === "rejected").length,
+  approvalRate:
+    requests.length > 0
+      ? ((requests.filter((r) => r.status === "approved").length / requests.length) * 100).toFixed(1)
+      : 0,
+};
+
 
   const approvalData = [
-    { name: 'Jan', approved: 45, rejected: 8, pending: 12 },
-    { name: 'Feb', approved: 52, rejected: 5, pending: 15 },
-    { name: 'Mar', approved: 48, rejected: 10, pending: 8 },
-    { name: 'Apr', approved: 61, rejected: 7, pending: 10 },
-    { name: 'May', approved: 55, rejected: 12, pending: 18 },
-    { name: 'Jun', approved: 67, rejected: 6, pending: 14 },
+    { name: 'Jan', approved: 45, rejected: 8, new: 12 },
+    { name: 'Feb', approved: 52, rejected: 5, new: 15 },
+    { name: 'Mar', approved: 48, rejected: 10, new: 8 },
+    { name: 'Apr', approved: 61, rejected: 7, new: 10 },
+    { name: 'May', approved: 55, rejected: 12, new: 18 },
+    { name: 'Jun', approved: 67, rejected: 6, new: 14 },
   ];
 
   const statusDistribution = [
     { name: 'Approved', value: 328, color: '#10b981' },
-    { name: 'Pending', value: 77, color: '#f59e0b' },
+    { name: 'new', value: 77, color: '#f59e0b' },
     { name: 'Rejected', value: 48, color: '#ef4444' },
   ];
 
@@ -111,8 +123,8 @@ export default function ProgramManagerDashboard() {
           <Card className="p-6 shadow-md hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm font-medium">Pending</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.pending}</p>
+                <p className="text-gray-500 text-sm font-medium">New</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.new}</p>
               </div>
               <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-tr from-yellow-200 to-yellow-400 shadow-inner">
                 <Clock className="w-6 h-6 text-yellow-800" />
@@ -144,115 +156,135 @@ export default function ProgramManagerDashboard() {
             </div>
           </Card>
         </div>
+          {/* Requests List */}
+          <Card className="border-gray-200">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="text-gray-900 mb-1">All Course Requests</h2>
+                  <p className="text-gray-600">Overview of all course enrollment requests</p>
+                </div>
+                <Button variant="outline" className="gap-2">
+                  <Filter className="w-4 h-4" />
+                  Export Report
+                </Button>
+              </div>
+            </div>
+                  {/* Filtering Buttons */}
+<div className="flex gap-4 p-6 border-b border-gray-200">
 
-        {/* Charts Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <Card className="p-6 border-gray-200">
-            <h3 className="text-gray-900 mb-4">Approval Trends</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={approvalData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis dataKey="name" stroke="#6b7280" />
-                <YAxis stroke="#6b7280" />
-                <Tooltip />
-                <Legend />
-                <Line type="monotone" dataKey="approved" stroke="#10b981" strokeWidth={2} />
-                <Line type="monotone" dataKey="rejected" stroke="#ef4444" strokeWidth={2} />
-                <Line type="monotone" dataKey="pending" stroke="#f59e0b" strokeWidth={2} />
-              </LineChart>
-            </ResponsiveContainer>
-          </Card>
+  {/* New */}
+  <button
+    className={`px-6 py-3 rounded-full font-medium text-sm shadow-sm transition ${
+      activeFilter === "new"
+        ? "bg-yellow-500 text-white"
+        : "bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
+    }`}
+    onClick={() => setActiveFilter("new")}
+  >
+    New
+  </button>
 
-          <Card className="p-6 border-gray-200">
-            <h3 className="text-gray-900 mb-4">Status Distribution</h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={statusDistribution}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  outerRadius={100}
-                  dataKey="value"
-                >
-                  {statusDistribution.map((entry, index) => (
-                    <Cell key={index} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </Card>
+  {/* Approved */}
+  <button
+    className={`px-6 py-3 rounded-full font-medium text-sm shadow-sm transition ${
+      activeFilter === "approved"
+        ? "bg-green-600 text-white"
+        : "bg-green-100 text-green-700 hover:bg-green-200"
+    }`}
+    onClick={() => setActiveFilter("approved")}
+  >
+    Approved
+  </button>
+
+  {/* Rejected */}
+  <button
+    className={`px-6 py-3 rounded-full font-medium text-sm shadow-sm transition ${
+      activeFilter === "rejected"
+        ? "bg-red-600 text-white"
+        : "bg-red-100 text-red-700 hover:bg-red-200"
+    }`}
+    onClick={() => setActiveFilter("rejected")}
+  >
+    Rejected
+  </button>
+
+  {/* All */}
+  <button
+    className={`px-6 py-3 rounded-full font-medium text-sm shadow-sm transition ${
+      activeFilter === "all"
+        ? "bg-blue-600 text-white"
+        : "bg-blue-100 text-blue-700 hover:bg-blue-200"
+    }`}
+    onClick={() => setActiveFilter("all")}
+  >
+    All
+  </button>
+
+</div>
+
+
+
+
+
+
+            <div className="divide-y divide-gray-200">
+             {filteredRequests.map((request) => (
+
+  <div
+    key={request.id}
+    className={`p-6 rounded-lg mb-3 transition hover:opacity-95 ${
+      request.status === "approved"
+        ? "bg-green-50 border border-green-200"
+        : request.status === "new"
+        ? "bg-yellow-50 border border-yellow-200"
+        : "bg-red-50 border border-red-200"
+    }`}
+  >
+    <div className="flex items-center justify-between">
+      <div className="flex-1">
+
+        <div className="flex items-center gap-3 mb-2">
+          <span className="text-gray-900">{request.studentName}</span>
+
+          <Badge
+            className={
+              request.status === "approved"
+                ? "bg-green-100 text-green-700 border-green-200"
+                : request.status === "new"
+                ? "bg-yellow-100 text-yellow-700 border-yellow-200"
+                : "bg-red-100 text-red-700 border-red-200"
+            }
+          >
+            {request.status}
+          </Badge>
         </div>
 
-        {/* Course Popularity */}
-        <Card className="p-6 border-gray-200 mb-8">
-          <h3 className="text-gray-900 mb-4">Most Requested Courses</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={coursePopularity}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-              <XAxis dataKey="course" stroke="#6b7280" />
-              <YAxis stroke="#6b7280" />
-              <Tooltip />
-              <Bar dataKey="requests" fill="#3b82f6" radius={[8, 8, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </Card>
+        <div className="text-gray-600">
+          {request.courseCode} - {request.courseName}
+        </div>
 
-        {/* Requests List */}
-        <Card className="border-gray-200">
-          <div className="p-6 border-b border-gray-200">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h2 className="text-gray-900 mb-1">All Course Requests</h2>
-                <p className="text-gray-600">Overview of all course enrollment requests</p>
-              </div>
-              <Button variant="outline" className="gap-2">
-                <Filter className="w-4 h-4" />
-                Export Report
-              </Button>
+        <div className="text-gray-500 mt-1">
+          {request.semester} • Reviewed by {request.advisorName} • {request.requestedDate}
+        </div>
+      </div>
+
+      <Button
+        variant="outline"
+        size="sm"
+        className="gap-2 cursor-pointer"
+        onClick={() => handleViewDetails(request)}
+      >
+        <Eye className="w-4 h-4" />
+        View Details
+      </Button>
+    </div>
+  </div>
+
+))}
+
             </div>
-          </div>
-
-          <div className="divide-y divide-gray-200">
-            {requests.map((request) => (
-              <div key={request.id} className="p-6 hover:bg-gray-50">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="text-gray-900">{request.studentName}</span>
-                      <Badge
-                        className={
-                          request.status === 'approved'
-                            ? 'bg-green-100 text-green-700 border-green-200'
-                            : request.status === 'pending'
-                            ? 'bg-yellow-100 text-yellow-700 border-yellow-200'
-                            : 'bg-red-100 text-red-700 border-red-200'
-                        }
-                      >
-                        {request.status}
-                      </Badge>
-                    </div>
-
-                    <div className="text-gray-600">
-                      {request.courseCode} - {request.courseName}
-                    </div>
-
-                    <div className="text-gray-500 mt-1">
-                      {request.semester} • Reviewed by {request.advisorName} • {request.requestedDate}
-                    </div>
-                  </div>
-
-                  <Button variant="outline" size="sm" className="gap-2 cursor-pointer" onClick={() => handleViewDetails(request)}>
-                    <Eye className="w-4 h-4" />
-                    View Details
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
+          </Card>
 
         {/* Request Details Modal */}
         <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
@@ -276,7 +308,7 @@ export default function ProgramManagerDashboard() {
                       className={
                         selectedRequest.status === 'approved'
                           ? 'bg-green-100 text-green-700 border-green-200'
-                          : selectedRequest.status === 'pending'
+                          : selectedRequest.status === 'new'
                           ? 'bg-yellow-100 text-yellow-700 border-yellow-200'
                           : 'bg-red-100 text-red-700 border-red-200'
                       }
