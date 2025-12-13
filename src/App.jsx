@@ -8,7 +8,7 @@ import SignupPage from "./components/SignupPage";
 import LoginPage from "./components/LoginPage";
 import StudentDashboard from "./components/StudentDashboard";
 import ProgramManagerDashboard from "./components/ProgramManagerDashboard";
-
+import AnalyticsView from "./components/AnalyticsView";
 function App() {
   return (
     <Routes>
