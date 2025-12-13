@@ -26,7 +26,7 @@ function App() {
       {/* Advisor */}
       <Route path="/advisordashboard" element={<AdvisorDashboard />} />
       <Route path="/pmdashboard" element={<ProgramManagerDashboard />} />
-       <Route path="/analytics" element={<AnalyticsView />} />
+      <Route path="/analytics" element={<AnalyticsView />} />
       <Route path="/studentdashboard" element={<StudentDashboard />} />
     </Routes>
   );
