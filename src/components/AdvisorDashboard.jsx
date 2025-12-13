@@ -318,7 +318,7 @@ const handleViewDetails = (request) => {
             }}
           >
             <CheckCircle className="w-4 h-4 mr-2" />
-            Approve
+            Forward
           </Button>
         </div>
 
