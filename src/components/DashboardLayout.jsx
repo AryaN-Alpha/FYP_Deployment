@@ -19,11 +19,13 @@ const Badge = ({ className, children }) => (
   </span>
 );
 
+// Mock navigation and context
+
 
 export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, setUser } = useUser();
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     setUser(null);              // clear context
@@ -32,7 +34,7 @@ const navigate = useNavigate();
   };
 
   const navigateto = (path) => {
-    navigate( path);
+    navigate(path);
     setSidebarOpen(false);
   };
 
@@ -84,31 +86,48 @@ const navigate = useNavigate();
 
         {/* Menu */}
         <nav className="flex-1 p-3 space-y-1">
-          <button
-            className="w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/60 text-slate-300 hover:text-white"
-            onClick={() => navigateto(`/${role.toLowerCase()}dashboard`)}
-          >
-            <LayoutDashboard className="w-5 h-5" />
-            <span>Dashboard</span>
-          </button>
 
-          <button
-            className="w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/60 text-slate-300 hover:text-white"
-            onClick={() => navigateto("/notifications")}
-          >
-            <Bell className="w-5 h-5" />
-            <span>Notifications</span>
-            <Badge className="bg-emerald-400 text-slate-900">3</Badge>
-          </button>
+  {/* Dashboard */}
+  <button
+    className="w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/60 text-slate-300 hover:text-white"
+    onClick={() => navigateto(`/${role.toLowerCase()}dashboard`)}
+  >
+    <LayoutDashboard className="w-5 h-5" />
+    <span>Dashboard</span>
+  </button>
 
-          <button
-            className="w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/60 text-slate-300 hover:text-white"
-            onClick={() => navigateto("/profile")}
-          >
-            <User className="w-5 h-5" />
-            <span>Profile</span>
-          </button>
-        </nav>
+  {/* Notifications */}
+  <button
+    className="w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/60 text-slate-300 hover:text-white"
+    onClick={() => navigateto("/notifications")}
+  >
+    <Bell className="w-5 h-5" />
+    <span>Notifications</span>
+    <Badge className="bg-emerald-400 text-slate-900">3</Badge>
+  </button>
+
+  {/* Profile */}
+  <button
+    className="w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/60 text-slate-300 hover:text-white"
+    onClick={() => navigateto("/profile")}
+  >
+    <User className="w-5 h-5" />
+    <span>Profile</span>
+  </button>
+
+  {/* PM ONLY — Analytics */}
+  {role.toLowerCase() === "pm" && (
+    <button
+      className="w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/60 text-slate-300 hover:text-white"
+      onClick={() => navigateto("/analytics")}
+    >
+      <LayoutDashboard className="w-5 h-5" />
+      <span>Analytics</span>
+    </button>
+  )}
+
+</nav>
+
 
         {/* Bottom User Info */}
         <div className="p-3 border-t border-slate-700">
@@ -118,7 +137,7 @@ const navigate = useNavigate();
           </div>
 
           <Button variant="ghost" className="w-full justify-start" onClick={handleLogout}>
-            <LogOut className="w-4 h-4" /> Logout
+            <LogOut className="w-4 h-4 cursor-pointer" /> Logout
           </Button>
         </div>
       </aside>
