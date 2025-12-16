@@ -175,7 +175,7 @@ const stats = {
 
   {/* New */}
   <button
-    className={`px-6 py-3 rounded-full font-medium text-sm shadow-sm transition ${
+    className={`px-6 py-3 rounded-full cursor-pointer font-medium text-sm shadow-sm transition ${
       activeFilter === "new"
         ? "bg-yellow-500 text-white"
         : "bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
@@ -187,7 +187,7 @@ const stats = {
 
   {/* Approved */}
   <button
-    className={`px-6 py-3 rounded-full font-medium text-sm shadow-sm transition ${
+    className={`px-6 py-3 rounded-full cursor-pointer font-medium text-sm shadow-sm transition ${
       activeFilter === "approved"
         ? "bg-green-600 text-white"
         : "bg-green-100 text-green-700 hover:bg-green-200"
@@ -199,7 +199,7 @@ const stats = {
 
   {/* Rejected */}
   <button
-    className={`px-6 py-3 rounded-full font-medium text-sm shadow-sm transition ${
+    className={`px-6 py-3 rounded-full cursor-pointer font-medium text-sm shadow-sm transition ${
       activeFilter === "rejected"
         ? "bg-red-600 text-white"
         : "bg-red-100 text-red-700 hover:bg-red-200"
@@ -211,7 +211,7 @@ const stats = {
 
   {/* All */}
   <button
-    className={`px-6 py-3 rounded-full font-medium text-sm shadow-sm transition ${
+    className={`px-6 py-3 rounded-full cursor-pointer font-medium text-sm shadow-sm transition ${
       activeFilter === "all"
         ? "bg-blue-600 text-white"
         : "bg-blue-100 text-blue-700 hover:bg-blue-200"
