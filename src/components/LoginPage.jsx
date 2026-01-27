@@ -6,7 +6,7 @@ import { useUser } from "../context/UserContext";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { setUser } = useUser();
+  const { user , setUser } = useUser();
   const [error, setError] = useState("");
   const [userRole, setUserRole] = useState(null);
 
@@ -65,7 +65,7 @@ export default function LoginPage() {
         role: "student",
         email: email
       });
-
+      localStorage.setItem("user", JSON.stringify(user));
       setError("Login successful!");
 
       if(email.includes("student")) {
